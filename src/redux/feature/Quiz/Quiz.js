@@ -15,7 +15,9 @@ const initialState = {
 export const getQues = createAsyncThunk("quiz/getQues", async (_, thunkapi) => {
   const { rejectWithValue } = thunkapi;
   try {
-    const { status, data } = await axios.get("http://localhost:9000/questions");
+    const { status, data } = await axios.get(
+      "https://quiz-react-black-sigma.vercel.app/questions"
+    );
     if (status === 200) {
       return data;
     }
