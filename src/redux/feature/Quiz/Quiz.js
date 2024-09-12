@@ -7,6 +7,10 @@ const initialState = {
   error: false,
   index: 0,
   answer: null,
+  points: 0,
+  open: false,
+  next: false,
+  closeStart: true,
 };
 export const getQues = createAsyncThunk("quiz/getQues", async (_, thunkapi) => {
   const { rejectWithValue } = thunkapi;
@@ -25,10 +29,22 @@ const quiz = createSlice({
   reducers: {
     addAnswer: (state, action) => {
       state.answer = action.payload;
+      state.points =
+        state.questions[state.index].correctOption === action.payload
+          ? state.points + state.questions[state.index].points
+          : state.points;
     },
     nextQ: (state) => {
       state.index = state.index + 1;
       state.answer = null;
+    },
+    restartQ: (state) => {
+      state.index = 0;
+      state.answer = null;
+      state.points = 0;
+      state.open = false;
+      state.next = false;
+      state.closeStart = true;
     },
   },
   extraReducers: (builder) => {
@@ -39,6 +55,9 @@ const quiz = createSlice({
       .addCase(getQues.fulfilled, (state, action) => {
         state.loading = false;
         state.questions = action.payload;
+        state.open = true;
+        state.next = true;
+        state.closeStart = false;
       })
       .addCase(getQues.rejected, (state) => {
         state.loading = false;
@@ -46,5 +65,5 @@ const quiz = createSlice({
       });
   },
 });
-export const { addAnswer, nextQ } = quiz.actions;
+export const { addAnswer, nextQ, restartQ } = quiz.actions;
 export default quiz.reducer;
