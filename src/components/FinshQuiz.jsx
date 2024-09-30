@@ -3,7 +3,9 @@ import { restartQ } from "../redux/feature/Quiz/Quiz";
 
 function FinshQuiz() {
   const { questions, points } = useSelector((state) => state.quiz);
-  const maxPossiblePoints = questions.reduce(
+  const { questions: question } = questions;
+
+  const maxPossiblePoints = question.reduce(
     (prev, cur) => prev + cur.points,
     0
   );

@@ -15,8 +15,11 @@ const initialState = {
 export const getQues = createAsyncThunk("quiz/getQues", async (_, thunkapi) => {
   const { rejectWithValue } = thunkapi;
   try {
-    const { status, data } = await axios.get("http://localhost:9000/questions");
+    const { status, data } = await axios.get(
+      "https://raw.githubusercontent.com/MohammedRady59/reactQuizDb/main/questions.json"
+    );
     if (status === 200) {
+      console.log(data);
       return data;
     }
   } catch (error) {
@@ -30,8 +33,8 @@ const quiz = createSlice({
     addAnswer: (state, action) => {
       state.answer = action.payload;
       state.points =
-        state.questions[state.index].correctOption === action.payload
-          ? state.points + state.questions[state.index].points
+        state.questions.questions[state.index].correctOption === action.payload
+          ? state.points + state.questions.questions[state.index].points
           : state.points;
     },
     nextQ: (state) => {

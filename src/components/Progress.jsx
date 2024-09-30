@@ -2,15 +2,17 @@ import { useSelector } from "react-redux";
 
 function Progress() {
   const { questions, index, points } = useSelector((state) => state.quiz);
-  const maxPossiblePoints = questions.reduce(
+  const { questions: question } = questions;
+
+  const maxPossiblePoints = question.reduce(
     (prev, cur) => prev + cur.points,
     0
   );
   return (
     <header className="progress">
-      <progress max={questions.length} value={index} />
+      <progress max={question.length} value={index} />
       <p>
-        Question <strong>{index + 1}</strong> / {questions.length}
+        Question <strong>{index + 1}</strong> / {question.length}
       </p>
 
       <p>
